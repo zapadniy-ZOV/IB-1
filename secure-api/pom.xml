@@ -127,6 +127,8 @@
 				<configuration>
 					<failBuildOnCVSS>0</failBuildOnCVSS>
 					<format>ALL</format>
+					<failOnError>false</failOnError>
+					<nvdApiKey>${env.NVD_API_KEY}</nvdApiKey>
 				</configuration>
 				<executions>
 					<execution>

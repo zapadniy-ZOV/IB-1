@@ -33,10 +33,10 @@ jobs:
         run: cd ./secure-api && mvn -B -DskipITs verify
 
       - name: Run SpotBugs
-        run: mvn -B com.github.spotbugs:spotbugs-maven-plugin:spotbugs
+        run: cd ./secure-api && mvn -B com.github.spotbugs:spotbugs-maven-plugin:spotbugs
 
       - name: Run OWASP Dependency-Check
-        run: mvn -B org.owasp:dependency-check-maven:check
+        run: cd ./secure-api && mvn -B org.owasp:dependency-check-maven:check
 
       - name: Upload SpotBugs report
         if: always()
