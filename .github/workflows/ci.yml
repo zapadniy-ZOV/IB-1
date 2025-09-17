@@ -33,7 +33,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Build + SpotBugs + Dependency-Check
-        run: cd ./secure-api && mvn -B -DskipTests -DskipITs package com.github.spotbugs:spotbugs-maven-plugin:spotbugs org.owasp:dependency-check-maven:check -Dnvd.api.key=${{ secrets.NVD_API_KEY }} -DnvdApiDelay=6000
+        run: cd ./secure-api && mvn -B verify -DskipTests -DskipITs -DnvdApiKey=${{ secrets.NVD_API_KEY }} -DnvdApiDelay=6000
 
       - name: Upload SpotBugs report
         if: always()
