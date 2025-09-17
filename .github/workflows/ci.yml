@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
     steps:
       - name: Checkout
@@ -33,7 +33,13 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Build + SpotBugs + Dependency-Check
-        run: cd ./secure-api && mvn -B verify -DskipTests -DskipITs -DnvdApiKey=${{ secrets.NVD_API_KEY }} -DnvdApiDelay=6000
+        run: cd ./secure-api && mvn -B verify -DskipTests
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/maven@master
+        with:
+          command: test
+          args: --file=secure-api/pom.xml
 
       - name: Upload SpotBugs report
         if: always()
@@ -43,13 +49,4 @@ jobs:
           path: |
             **/target/spotbugsXml.xml
             **/target/spotbugs-sarif.xml
-          if-no-files-found: warn
-
-      - name: Upload Dependency-Check report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: dependency-check-report
-          path: |
-            **/target/dependency-check-report.*
           if-no-files-found: warn
