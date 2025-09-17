@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
@@ -21,15 +22,19 @@ public class JwtService {
             @Value("${JWT_SECRET:change-me-please-change-me-please-change-me}") String jwtSecret,
             @Value("${JWT_TTL_SECONDS:3600}") long accessTokenTtlSeconds
     ) {
+        this.signingKey = generateSigningKey(jwtSecret);
+        this.accessTokenTtlSeconds = accessTokenTtlSeconds;
+    }
+
+    private static Key generateSigningKey(String secret) {
         // Allow both raw and base64 secrets
         byte[] keyBytes;
         try {
-            keyBytes = Decoders.BASE64.decode(jwtSecret);
-        } catch (Exception e) {
-            keyBytes = jwtSecret.getBytes();
+            keyBytes = Decoders.BASE64.decode(secret);
+        } catch (IllegalArgumentException e) {
+            keyBytes = secret.getBytes(StandardCharsets.UTF_8);
         }
-        this.signingKey = Keys.hmacShaKeyFor(keyBytes);
-        this.accessTokenTtlSeconds = accessTokenTtlSeconds;
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public String generateToken(String subject) {

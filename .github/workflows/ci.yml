@@ -37,9 +37,9 @@ jobs:
 
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/maven@master
+        working-directory: ./secure-api
         with:
           command: test
-          args: --file=secure-api/pom.xml
 
       - name: Upload SpotBugs report
         if: always()
