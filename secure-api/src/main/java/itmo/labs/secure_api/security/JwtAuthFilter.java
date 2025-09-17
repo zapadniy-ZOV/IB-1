@@ -1,5 +1,6 @@
 package itmo.labs.secure_api.security;
 
+import io.jsonwebtoken.JwtException;
 import itmo.labs.secure_api.user.User;
 import itmo.labs.secure_api.user.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -34,14 +35,18 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
             String username = jwtService.validateAndGetSubject(token);
-            User user = userRepository.findByUsername(username).orElse(null);
-            if (user != null) {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        username, null, Collections.emptyList());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+            try {
+                User user = userRepository.findByUsername(username).orElse(null);
+                if (user != null) {
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            username, null, Collections.emptyList());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            } catch (JwtException e) {
+                // Malformed token, don't authenticate
+                return;
             }
-
         }
 
         filterChain.doFilter(request, response);
