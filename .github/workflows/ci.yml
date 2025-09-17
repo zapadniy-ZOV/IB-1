@@ -35,11 +35,12 @@ jobs:
       - name: Build + SpotBugs
         run: cd ./secure-api && mvn -B verify -DskipTests
 
+      - name: Set up Snyk CLI
+        uses: snyk/actions/setup@master
+
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/maven@master
-        with:
-          command: test
-          args: --file=secure-api/pom.xml
+        working-directory: secure-api
+        run: snyk test --maven --file=pom.xml
 
       - name: Upload SpotBugs report
         if: always()
