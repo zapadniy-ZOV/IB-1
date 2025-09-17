@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JwtService {
+public final class JwtService {
 
     private final Key signingKey;
     private final long accessTokenTtlSeconds;
