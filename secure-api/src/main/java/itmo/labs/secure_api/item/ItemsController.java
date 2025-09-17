@@ -25,8 +25,11 @@ public class ItemsController {
         this.itemRepository = itemRepository;
     }
 
-    public record ItemCreateRequest(@NotBlank @Size(max = 255) String title) {}
-    public record ItemResponse(Long id, String title) {}
+    public record ItemCreateRequest(@NotBlank @Size(max = 255) String title) {
+    }
+
+    public record ItemResponse(Long id, String title) {
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> create(@RequestBody @Valid ItemCreateRequest body, Authentication auth) {
@@ -35,8 +38,7 @@ public class ItemsController {
         Item saved = itemRepository.save(item);
         return Map.of(
                 "createdBy", auth.getName(),
-                "item", new ItemResponse(saved.getId(), forHtml(saved.getTitle()))
-        );
+                "item", new ItemResponse(saved.getId(), forHtml(saved.getTitle())));
     }
 
     @GetMapping
@@ -46,5 +48,3 @@ public class ItemsController {
                 .toList();
     }
 }
-
-

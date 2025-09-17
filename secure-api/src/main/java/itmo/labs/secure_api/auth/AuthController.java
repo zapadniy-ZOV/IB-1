@@ -19,7 +19,8 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
 
-    record LoginRequest(@NotBlank String username, @NotBlank String password) {}
+    record LoginRequest(@NotBlank String username, @NotBlank String password) {
+    }
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -41,5 +42,3 @@ public class AuthController {
         return ResponseEntity.ok(Map.of("token", token, "tokenType", "Bearer"));
     }
 }
-
-

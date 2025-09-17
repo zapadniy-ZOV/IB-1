@@ -13,5 +13,3 @@ public class AppSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
-
-

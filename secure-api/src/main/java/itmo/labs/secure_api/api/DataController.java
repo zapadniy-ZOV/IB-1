@@ -16,9 +16,6 @@ public class DataController {
     public Map<String, Object> getData(Authentication auth) {
         return Map.of(
                 "currentUser", auth.getName(),
-                "items", List.of(Map.of("id", 1, "title", "Hello"), Map.of("id", 2, "title", "World"))
-        );
+                "items", List.of(Map.of("id", 1, "title", "Hello"), Map.of("id", 2, "title", "World")));
     }
 }
-
-

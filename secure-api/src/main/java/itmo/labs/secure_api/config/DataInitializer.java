@@ -14,8 +14,7 @@ public class DataInitializer {
             UserService userService,
             @Value("${INIT_USERNAME:}") String initUsername,
             @Value("${INIT_PASSWORD:}") String initPassword,
-            @Value("${INIT_EMAIL:}") String initEmail
-    ) {
+            @Value("${INIT_EMAIL:}") String initEmail) {
         return args -> {
             if (initUsername != null && !initUsername.isBlank() && initPassword != null && !initPassword.isBlank()) {
                 try {
@@ -27,5 +26,3 @@ public class DataInitializer {
         };
     }
 }
-
-

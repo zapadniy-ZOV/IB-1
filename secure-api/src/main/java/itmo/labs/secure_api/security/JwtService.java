@@ -20,8 +20,7 @@ public final class JwtService {
 
     public JwtService(
             @Value("${JWT_SECRET:change-me-please-change-me-please-change-me}") String jwtSecret,
-            @Value("${JWT_TTL_SECONDS:3600}") long accessTokenTtlSeconds
-    ) {
+            @Value("${JWT_TTL_SECONDS:3600}") long accessTokenTtlSeconds) {
         this.signingKey = generateSigningKey(jwtSecret);
         this.accessTokenTtlSeconds = accessTokenTtlSeconds;
     }
@@ -57,5 +56,3 @@ public final class JwtService {
         return claims.getSubject();
     }
 }
-
-
