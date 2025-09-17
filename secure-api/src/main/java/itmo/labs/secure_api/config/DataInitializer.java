@@ -20,7 +20,8 @@ public class DataInitializer {
             if (initUsername != null && !initUsername.isBlank() && initPassword != null && !initPassword.isBlank()) {
                 try {
                     userService.createUser(initUsername, initEmail, initPassword);
-                } catch (Exception ignored) {
+                } catch (Exception e) {
+                    System.out.println("Error initializing users: " + e.getMessage());
                 }
             }
         };
