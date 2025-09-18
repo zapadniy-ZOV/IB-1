@@ -47,7 +47,7 @@ jobs:
         working-directory: secure-api
         run: |
           chmod +x mvnw || true
-          snyk test --maven --file=pom.xml --json-file-output=../snyk-report.json --exclude-policy=licenses
+          snyk test --maven --file=pom.xml --json-file-output=../snyk-report.json --exclude-licenses
 
       - name: Upload Snyk report
         if: always()
